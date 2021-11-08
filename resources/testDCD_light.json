@@ -1,0 +1,188 @@
+{
+    "type": "form",
+    "tags": [],
+    "settings": {
+      "collection": "HDPG1234HDPR1234eHealthTestDCD_dcd1"
+    },
+    "components": [{
+        "html": "<p>{{ instance.t('TX_CTNT_LANG_2') }}</p>",
+        "label": "Content",
+        "refreshOnChange": false,
+        "tableView": false,
+        "key": "content",
+        "type": "content",
+        "input": false
+      },
+      {
+        "legend": "TX_TTL_EBV",
+        "tableView": false,
+        "key": "TX_TTL_EBV",
+        "type": "fieldset",
+        "label": "TX_TTL_EBV",
+        "input": false,
+        "components": [{
+          "label": "TX_TTL_EBV",
+          "openWhenEmpty": true,
+          "hideLabel": true,
+          "tableView": false,
+          "validate": {
+            "minLength": 1,
+            "required": true
+          },
+          "rowDrafts": false,
+          "key": "TX_TTL_EBV",
+          "type": "datagrid",
+          "input": true,
+          "components": [{
+            "tableView": false,
+            "key": "TX_TTL_EBV_ROW",
+            "type": "fieldset",
+            "input": false,
+            "components": [{
+                "label": "CD_LOBE",
+                "widget": "choicesjs",
+                "tableView": true,
+                "dataSrc": "url",
+                "data": {
+                  "values": [{
+                    "label": "",
+                    "value": ""
+                  }],
+                  "url": "proxy/api/codelist?code-list-id=35&limit={{ limit }}&skip={{ skip }}&language={{ instance.i18next.language }}",
+                  "headers": [{
+                    "key": "",
+                    "value": ""
+                  }]
+                },
+                "dataType": "object",
+                "selectThreshold": 0.3,
+                "dbIndex": true,
+                "validate": {                 
+                  "custom": "valid = true;let lobes = Array.isArray(data.TX_TTL_EBV) ? data.TX_TTL_EBV : [data.TX_TTL_EBV];function getDuplicateArrayElements(lobes){var results = [];for(var i = 0; i < lobes.length - 1; i++){for(var j = i + 1; j < lobes.length; j++){if(lobes[i].CD_LOBE && lobes[j].CD_LOBE && ((lobes[i].CD_LOBE.id && lobes[j].CD_LOBE.id && lobes[i].CD_LOBE.id === lobes[j].CD_LOBE.id) || lobes[i].CD_LOBE == lobes[j].CD_LOBE)){results.push(lobes[i]);}}}return results;}let duplicates = getDuplicateArrayElements(lobes);if (duplicates && duplicates.length) {let currentLobeFound = duplicates.find(function(item, index){let resultFound = item.CD_LOBE && input && (item.CD_LOBE.id === input.id || item.CD_LOBE == input);console.log('item.CD_LOBE.id ' + item.CD_LOBE.id);return resultFound;});console.log('currentLobeFound ' + currentLobeFound);console.log('duplicates = ' + duplicates[0]);if(currentLobeFound) {valid = 'TX_ERR_129';}}",
+                  "required": true,
+                  "select": false
+                },
+                "key": "CD_LOBE",
+                "type": "select",
+                "indexeddb": {
+                  "filter": {}
+                },
+                "searchField": "search",
+                "limit": 10,
+                "input": true,
+                "disableLimit": false
+              }          
+            ]
+          }]
+        }]
+      }
+      {
+        "label": "CD_STATUS_REC",
+        "hidden": true,
+        "tableView": true,
+        "dbIndex": true,
+        "key": "CD_STATUS_REC",
+        "type": "textfield",
+        "defaultValue": "status_new",
+        "clearOnHide": false,
+        "input": true
+      },
+      {
+        "label": "TX_REG_NAM",
+        "hidden": true,
+        "tableView": false,
+        "defaultValue": "eHealthTestDCD",
+        "dbIndex": true,
+        "clearOnHide": false,
+        "key": "TX_REG_NAM",
+        "type": "textfield",
+        "input": true
+      },
+      {
+        "label": "project_id",
+        "widget": "choicesjs",
+        "customClass": "hideComponent",
+        "dataSrc": "resource",
+        "data": {
+          "resource": "project"
+        },
+        "template": "<span>{{ item.data.name}}</span>",
+        "clearOnHide": false,
+        "calculateValue": "if(instance.selectOptions !== undefined && instance.selectOptions.length === 1 ){  value = instance.selectOptions[0].value;}",
+        "key": "projectId",
+        "type": "select",
+        "filter": "data.projectId={{data.project}}",
+        "input": true,
+        "addResource": false,
+        "lazyLoad": false,
+        "persistent": true,
+        "allowCalculateOverride": false,
+        "tableView": false,
+        "dbIndex": true,
+        "submissionAccess": [{
+            "type": "read",
+            "roles": [
+              "head_of_department",
+              "local_project_lead"
+            ]
+          },
+          {
+            "type": "create",
+            "roles": [
+              "local_project_lead",
+              "assistant_of_hcp",
+              "healthcare_professional"
+            ]
+          },
+          {
+            "type": "update",
+            "roles": [
+              "local_project_lead"
+            ]
+          },
+          {
+            "type": "delete",
+            "roles": [
+              "local_project_lead"
+            ]
+          }
+        ]
+      },
+      {
+        "label": "TX_LANG",
+        "hidden": true,
+        "tableView": false,
+        "dbIndex": true,
+        "defaultValue": false,
+        "clearOnHide": false,
+        "key": "TX_LANG",
+        "type": "textfield",
+        "input": true
+      },
+      {
+        "type": "button",
+        "label": "Submit",
+        "key": "submit",
+        "disableOnInvalid": true,
+        "input": true,
+        "tableView": false
+      }
+    ],
+    "revisions": "current",
+    "_vid": 63,
+    "title": "eHealth Test DCD",
+    "display": "form",
+    "submissionAccess": [{
+      "roles": [
+        "{{authenticated}}"
+      ],
+      "type": "read_own"
+    }],
+    "properties": {
+      "DCD_VERSION_ID": "16"
+    },
+    "name": "eHealthTestDCD",
+    "path": "eHealthTestDCD",
+    "controller": ""
+  }
+  
