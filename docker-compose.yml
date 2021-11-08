@@ -23,26 +23,28 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME:
       MONGO_INITDB_ROOT_PASSWORD:
-
-  formio:
-    build: ./
-    # The app will restart until Mongo is listening
-    restart: always
-    links:
-      - mongo
     ports:
-      - "3001:3001"
-    # The application wants to download things to the local directory
-    # TODO: really wish I could mount this as read-only
-    volumes:
-      - ./:/app:rw
-    environment:
-      DEBUG: formio:*
-      NODE_CONFIG: '{"mongo": "mongodb://mongo:27017/formio"}'
-      ROOT_EMAIL: admin@example.com
-      ROOT_PASSWORD: CHANGEME
-    stdin_open: true  # -i
-    tty: true         # -t
+      - "27017:27017"
+
+  # formio:
+  #   build: ./
+  #   # The app will restart until Mongo is listening
+  #   restart: always
+  #   links:
+  #     - mongo
+  #   ports:
+  #     - "3001:3001"
+  #   # The application wants to download things to the local directory
+  #   # TODO: really wish I could mount this as read-only
+  #   volumes:
+  #     - ./:/app:rw
+  #   environment:
+  #     DEBUG: formio:*
+  #     NODE_CONFIG: '{"mongo": "mongodb://mongo:27017/formio"}'
+  #     ROOT_EMAIL: admin@example.com
+  #     ROOT_PASSWORD: CHANGEME
+  #   stdin_open: true  # -i
+  #   tty: true         # -t
 
 volumes:
   mdb-data:
